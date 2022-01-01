@@ -1,6 +1,6 @@
-import { useForm } from "react-hook-form";
-import { useAuth } from "../context/AuthContext";
-import { Navigate, Link } from "react-router-dom";
+import { useForm } from 'react-hook-form';
+import { useAuth } from '../context/AuthContext';
+import { Navigate, Link, useLocation } from 'react-router-dom';
 
 const Register = () => {
   const {
@@ -9,9 +9,11 @@ const Register = () => {
     formState: { errors },
   } = useForm();
   const { isAuthenticated, signup } = useAuth();
+  const location = useLocation();
+  const from = location.state?.from || '/myspace';
   const onSubmit = (formData) => signup(formData);
 
-  if (isAuthenticated) return <Navigate to='/myspace' />;
+  if (isAuthenticated) return <Navigate to={from} replace />;
   return (
     <div className='row justify-content-center'>
       <div className='col-md-4'>
@@ -20,45 +22,22 @@ const Register = () => {
             <label htmlFor='name' className='form-lable'>
               Name:
             </label>
-            <input
-              className={
-                errors.name ? "form-control is-invalid" : "form-control"
-              }
-              {...register("name", { required: true })}
-            />
-            {errors.name && (
-              <div className='invalid-feedback'>Name is required.</div>
-            )}
+            <input className={errors.name ? 'form-control is-invalid' : 'form-control'} {...register('name', { required: true })} />
+            {errors.name && <div className='invalid-feedback'>Name is required.</div>}
           </div>
           <div>
             <label htmlFor='email' className='form-lable'>
               Email:
             </label>
-            <input
-              className={
-                errors.email ? "form-control is-invalid" : "form-control"
-              }
-              type='email'
-              {...register("email", { required: true })}
-            />
-            {errors.email && (
-              <div className='invalid-feedback'>Email is required.</div>
-            )}
+            <input className={errors.email ? 'form-control is-invalid' : 'form-control'} type='email' {...register('email', { required: true })} />
+            {errors.email && <div className='invalid-feedback'>Email is required.</div>}
           </div>
           <div>
             <label htmlFor='password' className='form-lable'>
               Password:
             </label>
-            <input
-              className={
-                errors.password ? "form-control is-invalid" : "form-control"
-              }
-              type='password'
-              {...register("password", { required: true })}
-            />
-            {errors.password && (
-              <div className='invalid-feedback'>Password is required.</div>
-            )}
+            <input className={errors.password ? 'form-control is-invalid' : 'form-control'} type='password' {...register('password', { required: true })} />
+            {errors.password && <div className='invalid-feedback'>Password is required.</div>}
           </div>
           <div>
             <small>
